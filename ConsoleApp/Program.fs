@@ -22,12 +22,16 @@ module Dictionary =
     
 
  // saveDictionary Function
-
- 
+    let saveDictionary (dict: Map<string, string>) =
+        let entries = dict |> Map.toList |> List.map (fun (word, definition) -> { Word = word; Definition = definition })
+        writeJson dictionaryFilePath entries
 
  // addWord Function
+    let addWord (dict: Map<string, string>) (word: string) (definition: string) : Map<string, string> =
+        let wordKey = word.ToLowerInvariant()
+        if dict.ContainsKey(wordKey) then dict
+        else dict.Add(wordKey, definition)
 
- 
 
  // updateWord Function
 
