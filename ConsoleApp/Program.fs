@@ -34,11 +34,22 @@ module Dictionary =
 
 
  // updateWord Function
-
+    let updateWord (dict: Map<string, string>) (oldWord: string) (newWord: string) (newDefinition: string) : Map<string, string> =
+        let oldKey = oldWord.ToLowerInvariant()
+        let newKey = newWord.ToLowerInvariant()
+        if dict.ContainsKey(oldKey) then
+            dict
+            |> Map.remove oldKey
+            |> Map.add newKey newDefinition
+        else
+            dict
 
 
  // deleteWord Function
-
+    let deleteWord (dict: Map<string, string>) (word: string) : Map<string, string> =
+        let wordKey = word.ToLowerInvariant()
+        if dict.ContainsKey(wordKey) then dict.Remove(wordKey)
+        else dict
 
 
  // searchWord Function
