@@ -14,12 +14,20 @@ let dictionaryFilePath = "dictionary.json"
 
 
  // initializeDictionaryFile Function
+let initializeDictionaryFile () =
+    if not (File.Exists(dictionaryFilePath)) then
+        File.WriteAllText(dictionaryFilePath, "[]")
 
 
 module Dictionary =
 
  // loadDictionary Function
-    
+    let loadDictionary () =
+        let entries = readJson<DictionaryEntry> dictionaryFilePath
+        entries 
+        |> List.map (fun e -> e.Word.ToLowerInvariant(), e.Definition) 
+        |> Map.ofList
+   
 
  // saveDictionary Function
     let saveDictionary (dict: Map<string, string>) =
