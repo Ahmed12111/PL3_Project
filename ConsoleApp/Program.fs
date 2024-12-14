@@ -39,7 +39,7 @@ module Dictionary =
 
  // searchWord Function
 
-
+// Create GUI
 let createDictionaryForm () =
     initializeDictionaryFile()
     let mutable dictionary = Dictionary.loadDictionary()
