@@ -1,0 +1,4 @@
+C:\Users\Ahmed Hany\source\repos\ConsoleApp6\ConsoleApp6\obj\Debug\net8.0\ConsoleApp6.fsproj.AssemblyReference.cache
+C:\Users\Ahmed Hany\source\repos\ConsoleApp6\ConsoleApp6\obj\Debug\net8.0\ConsoleApp6.AssemblyInfoInputs.cache
+C:\Users\Ahmed Hany\source\repos\ConsoleApp6\ConsoleApp6\obj\Debug\net8.0\ConsoleApp6.AssemblyInfo.fs
+C:\Users\Ahmed Hany\source\repos\ConsoleApp6\ConsoleApp6\obj\Debug\net8.0\ConsoleApp6.fsproj.CoreCompileInputs.cache
