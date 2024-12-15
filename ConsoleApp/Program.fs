@@ -78,6 +78,13 @@ module Dictionary =
 
 
  // searchWord Function
+    let searchWord (dict: Map<string, string>) (keyword: string) : (string * string) list =
+        let keyword = keyword.ToLowerInvariant()
+        dict 
+        |> Map.filter (fun key value -> 
+            key.Contains(keyword))
+        |> Map.toList
+
 
 
 // Create GUI
