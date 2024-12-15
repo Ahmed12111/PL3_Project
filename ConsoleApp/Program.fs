@@ -94,6 +94,9 @@ let createDictionaryForm () =
         if String.IsNullOrWhiteSpace(word) || String.IsNullOrWhiteSpace(definition) then
             lblStatus.Text <- "Please enter both a word and its definition."
             lblStatus.ForeColor <- Color.Red
+        elif dictionary.ContainsKey(word.ToLowerInvariant()) then
+            lblStatus.Text <- $"The word '{word}' already exists in the dictionary."
+            lblStatus.ForeColor <- Color.Orange
         else
             dictionary <- Dictionary.addWord dictionary word definition
             Dictionary.saveDictionary dictionary
@@ -108,11 +111,16 @@ let createDictionaryForm () =
             lblStatus.Text <- "Please enter a word and its new definition."
             lblStatus.ForeColor <- Color.Red
         else
-            dictionary <- Dictionary.updateWord dictionary word word definition
-            Dictionary.saveDictionary dictionary
-            lblStatus.Text <- $"Updated: {word}"
-            lblStatus.ForeColor <- Color.DarkGreen
-            updateResults (Dictionary.searchWord dictionary ""))
+            let wordExists = dictionary.ContainsKey(word.ToLowerInvariant())
+            if not wordExists then
+                lblStatus.Text <- $"The word '{word}' does not exist in the dictionary."
+                lblStatus.ForeColor <- Color.Red
+            else
+                dictionary <- Dictionary.updateWord dictionary word word definition
+                Dictionary.saveDictionary dictionary
+                lblStatus.Text <- $"Updated: {word}"
+                lblStatus.ForeColor <- Color.DarkGreen
+                updateResults (Dictionary.searchWord dictionary ""))
 
     btnDelete.Click.Add(fun _ ->
         let word = textWord.Text
@@ -120,23 +128,33 @@ let createDictionaryForm () =
             lblStatus.Text <- "Please enter a word to delete."
             lblStatus.ForeColor <- Color.Red
         else
-            dictionary <- Dictionary.deleteWord dictionary word
-            Dictionary.saveDictionary dictionary
-            lblStatus.Text <- $"Deleted: {word}"
-            lblStatus.ForeColor <- Color.DarkGreen
-            updateResults (Dictionary.searchWord dictionary ""))
+            let wordExists = dictionary.ContainsKey(word.ToLowerInvariant())
+            if not wordExists then
+                lblStatus.Text <- $"The word '{word}' does not exist in the dictionary."
+                lblStatus.ForeColor <- Color.Red
+            else
+                dictionary <- Dictionary.deleteWord dictionary word
+                Dictionary.saveDictionary dictionary
+                lblStatus.Text <- $"Deleted: {word}"
+                lblStatus.ForeColor <- Color.DarkGreen
+                updateResults (Dictionary.searchWord dictionary ""))
 
     btnSearch.Click.Add(fun _ ->
         let keyword = textWord.Text
-        let results = Dictionary.searchWord dictionary keyword
-        if List.isEmpty results then
-            lblStatus.Text <- "No matching words found."
+        if String.IsNullOrWhiteSpace(keyword) then
+            lblStatus.Text <- "Please enter a word or definition to search."
             lblStatus.ForeColor <- Color.Red
         else
-            lblStatus.Text <- $"Found {List.length results} results."
-            lblStatus.ForeColor <- Color.DarkGreen
-    
-        updateResults results)
+            let results = Dictionary.searchWord dictionary keyword
+            if List.isEmpty results then
+                lblStatus.Text <- $"No matches found for '{keyword}'."
+                lblStatus.ForeColor <- Color.Red
+            else
+                lblStatus.Text <- $"Found {List.length results} result(s) for '{keyword}'."
+                lblStatus.ForeColor <- Color.DarkGreen
+
+            updateResults results)
+
 
     form.Controls.AddRange([| lblWord; textWord; lblDefinition; textDefinition; btnAdd; btnUpdate; btnDelete; btnSearch; lblStatus; listResults |])
     form
