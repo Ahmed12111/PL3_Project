@@ -8,9 +8,26 @@ type DictionaryEntry = { Word: string; Definition: string }
 let dictionaryFilePath = "dictionary.json"
 
  // readJson Function
-
+let readJson<'T> (filePath: string) : 'T list =
+    if File.Exists(filePath) then
+        let json = File.ReadAllText(filePath)
+        if String.IsNullOrWhiteSpace(json) then
+            [] // Return an empty list if the file is empty
+        else
+            try
+                match JsonSerializer.Deserialize<'T list>(json) with
+                | result -> result
+            with
+            | :? System.Text.Json.JsonException ->
+                printfn "Warning: Invalid JSON in file '%s'. Returning an empty list." filePath
+                []
+    else
+        []
 
  // writeJson Function
+let writeJson<'T> (filePath: string) (data: 'T list) =
+    let json = JsonSerializer.Serialize(data)
+    File.WriteAllText(filePath, json)
 
 
  // initializeDictionaryFile Function
